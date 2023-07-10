@@ -1,0 +1,41 @@
+pipeline {
+    tools{
+        maven 'mymaven'
+    }
+
+    stages {
+        stage('Code Directory') {
+            steps {
+                git 'https://github.com/Yrus0105/DevOpsClassCodes_me.git'
+            }
+        }
+         stage('Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('Code Review') {
+            steps {
+                sh 'mvn pmd:pmd'
+            }
+            post{
+                recordIssues(tools: [pmdParser(pattern: 'target/pmd.xml')])
+            }
+        }
+        stage('Unit Testing') {
+            steps {
+                sh 'test'
+            }
+            post{
+            junit 'target/surefire-report/*.xml'
+                
+            }
+            
+        }
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+    }
+}
