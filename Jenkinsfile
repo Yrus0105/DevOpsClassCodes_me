@@ -10,7 +10,7 @@ pipeline {
                 git 'https://github.com/Yrus0105/DevOpsClassCodes_me.git'
             }
         }
-        stage('Comilation') {
+        stage('Compilation') {
             steps {
                 echo 'this is stage 2'
                 sh 'mvn compile'
